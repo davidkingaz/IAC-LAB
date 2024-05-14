@@ -1,0 +1,8 @@
+---
+- name: Configure netbox service template in NETBOX
+  netbox.netbox.netbox_service_template:
+    netbox_url: "{{ netbox_url }}"
+    netbox_token: "{{ obtained_token }}"
+    data: "{{ site }}"
+    state: present # or absent
+  tags: [sites]

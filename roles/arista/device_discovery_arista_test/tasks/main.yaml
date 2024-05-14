@@ -1,0 +1,51 @@
+---
+- name: Gather Arista EOS facts
+  arista.eos.eos_facts:
+    gather_subset: all
+  register: arista_output
+
+- name: Gather OSPFv2 facts
+  ansible.builtin.include_role:
+    name: network.base.resource_manager
+  vars:
+# noqa: var-naming[no-role-prefix]
+    operation: 'gather'
+    ansible_network_os: arista.eos.eos
+    resources:
+      - 'ospfv2'
+
+- name: Set OSPFv2 result
+  ansible.builtin.set_fact:
+    ospfv2_output: "{{ resource_manager_result }}"
+
+- name: Gather OSPF interfaces facts
+  ansible.builtin.include_role:
+    name: network.base.resource_manager
+  vars:
+# noqa: var-naming[no-role-prefix]
+    operation: 'gather'
+    ansible_network_os: arista.eos.eos
+    resources:
+      - 'ospf_interfaces'
+
+- name: Set OSPF interfaces result
+  ansible.builtin.set_fact:
+    ospf_interfaces_output: "{{ resource_manager_result }}"
+
+- name: Gather OSPFv3 facts
+  ansible.builtin.include_role:
+    name: network.base.resource_manager
+  vars:
+# noqa: var-naming[no-role-prefix]
+    operation: 'gather'
+    ansible_network_os: arista.eos.eos
+    resources:
+      - 'ospfv3'
+
+- name: Set OSPFv3 result
+  ansible.builtin.set_fact:
+    ospfv3_output: "{{ resource_manager_result }}"
+
+- name: Combine the data from different facts
+  ansible.builtin.set_fact:
+    eos_output: "{{ arista_output | combine(ospfv2_output) }}"

@@ -1,0 +1,18 @@
+---
+- name: Setup the Device Types within NETBOX
+  netbox.netbox.netbox_device_type:
+    netbox_url: "{{ netbox_url }}"
+    netbox_token: "{{ obtained_token }}"
+    data:
+      model: "{{ device_type.model }}"
+      manufacturer: "{{ device_type.manufacturer }}"
+      slug: "{{ device_type.slug }}"
+      part_number: "{{ device_type.part_number }}"
+      u_height: 1
+      is_full_depth: "{{ device_type.is_full_depth }}"
+    state: "{{ install_state }}"
+  loop: "{{ device_types }}"
+  loop_control:
+    loop_var: device_type
+    label: "{{ device_type['model'] }}"
+  tags: [devices]

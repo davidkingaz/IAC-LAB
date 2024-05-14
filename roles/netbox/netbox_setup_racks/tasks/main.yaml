@@ -1,0 +1,12 @@
+---
+- name: Setup the Racks within NETBOX
+  netbox.netbox.netbox_rack:
+    netbox_url: "{{ netbox_url }}"
+    netbox_token: "{{ obtained_token }}"
+    data: "{{ rack }}"
+    state: "{{ install_state }}"
+  loop: "{{ racks }}"
+  loop_control:
+    loop_var: rack
+    label: "{{ rack['name'] }}"
+  tags: [sites, devices]

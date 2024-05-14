@@ -1,0 +1,27 @@
+---
+- name: Add the Interfaces to NETBOX
+  netbox.netbox.netbox_device_interface:
+    netbox_url: "{{ netbox_url }}"
+    netbox_token: "{{ obtained_token }}"
+    data:
+      device: "{{ ansible_net_hostname }}"
+      name: "{{ item.name }}"
+      enabled: "{{ item.enabled }}"
+      type: "1000Base-t (1GE)"
+    state: "{{ install_state }}"
+  loop: "{{ translated_interfaces }}"
+
+# - name: Add the Interfaces to NETBOX
+#   netbox.netbox.netbox_device_interface:
+#     netbox_url: "{{ netbox_url }}"
+#     netbox_token: "{{ obtained_token }}"
+#     data:
+#       device: "{{ ansible_net_hostname }}"
+#       name: "{{ item2.name }}"
+#       type: "1000Base-t (1GE)"
+#       bandwidth: "{{ item2.bandwidth }}"
+#       description: "{{ item2.description }}"
+#       mtu: "{{ item2.mtu }}"
+#       mac_address: "{{ item2.mac_address }}"
+#     state: "{{ install_state }}"
+#   loop: "{{ additional_int_details }}"

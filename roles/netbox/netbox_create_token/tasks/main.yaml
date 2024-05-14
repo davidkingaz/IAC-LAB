@@ -1,0 +1,28 @@
+---
+- name: Send POST request to provision Netbox runtime token
+  ansible.builtin.uri:
+    url: "{{ netbox_url }}/api/users/tokens/provision/"
+    method: POST
+    body_format: json
+    headers:
+      accept: "application/json"
+      Content-Type: "application/json"
+    body:
+      username: "{{ netbox_user }}"
+      password: "{{ netbox_pwd }}"
+    status_code: 201  # Expecting a 201
+    return_content: true
+  register: response
+
+- name: Save token key to variable
+  ansible.builtin.set_fact:
+    obtained_token: "{{ response.json.key }}"
+
+- name: Save token id to variable
+  ansible.builtin.set_fact:
+    obtained_token_id: "{{ response.json.id }}"
+
+- name: Handle any error (e.g., 401 Unauthorized)
+  ansible.builtin.fail:
+    msg: "Failed to create token. Error: {{ response.json.detail }}"
+  when: response.status != 201

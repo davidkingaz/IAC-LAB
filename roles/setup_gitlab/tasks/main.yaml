@@ -1,0 +1,57 @@
+---
+- name: Create the GitLab directory
+  ansible.builtin.file:
+    path: /srv/gitlab
+    state: directory
+    mode: '0755'  # Set appropriate permissions
+
+- name: Set GITLAB_HOME environment variable for the playbook
+  ansible.builtin.set_fact:
+    gitlab_home: /srv/gitlab
+
+# Example usage of the gitlab_home variable in subsequent tasks
+- name: Debug GITLAB_HOME
+  ansible.builtin.debug:
+    msg: "The GITLAB_HOME is set to {{ gitlab_home }}"
+
+- name: Deploy GitLab using Docker
+  community.docker.docker_container:
+    name: gitlab
+    image: "gitlab/gitlab-ee:latest"
+    state: started
+    restart_policy: always
+    detach: true
+    published_ports:
+      - "443:443"
+      - "80:80"
+      - "3434:22"
+    hostname: "gitlab.kingfamilyaz.com"
+    env:
+      GITLAB_OMNIBUS_CONFIG: "external_url 'http://gitlab.kingfamilyaz.com';"  # Additional configurations can be added in the string
+    volumes:
+      - "{{ gitlab_home }}/config:/etc/gitlab"
+      - "{{ gitlab_home }}/logs:/var/log/gitlab"
+      - "{{ gitlab_home }}/data:/var/opt/gitlab"
+    shm_size: 256m
+
+- name: Retrieve GitLab initial root password
+  ansible.builtin.command: docker exec gitlab grep 'Password:' /etc/gitlab/initial_root_password
+  register: gitlab_root_password
+  changed_when: false
+
+- name: Print GitLab initial root password
+  ansible.builtin.debug:
+    msg: "{{ gitlab_root_password.stdout }}"
+
+- name: Set GitLab root password
+  community.docker.docker_container_exec:
+    container: gitlab
+    command: >
+      /opt/gitlab/bin/gitlab-rails runner -e production
+      "user = User.find(1); user.password = '@dminPa33word';
+      user.password_confirmation = '@dminPa33word'; user.save!"
+  register: new_password
+
+- name: Print GitLab new root password
+  ansible.builtin.debug:
+    msg: "{{ new_password.stdout }}"

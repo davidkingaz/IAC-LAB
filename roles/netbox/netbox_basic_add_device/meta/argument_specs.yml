@@ -1,0 +1,112 @@
+---
+argument_specs:
+  main:
+    options:
+      netbox_variables:
+        type: list
+        elements: dict
+        options:
+          name:
+            type: str
+            required: true
+          airflow:
+            type: str
+            choices:
+              - front-to-rear
+              - rear-to-front
+              - left-to-right
+              - right-to-left
+              - side-to-rear
+          asset_tag:
+            type: str
+          cluster:
+            type: str
+          comments:
+            type: str
+          custom_fields:
+            type: str
+          description:
+            type: str
+          device_role:
+            type: str
+            required: true
+            choices:
+              - Router
+              - Switch
+              - Firewall
+          device_type:
+            type: str
+            required: true
+            choices:
+              - vEOS
+              - ASAv
+              - CSR1000v
+              - vSRX
+              - IOS
+          face:
+            type: str
+            choices:
+              - Front
+              - Rear
+          location:
+            type: str
+          platform:
+            type: str
+            choices:
+              - EOS
+              - IOS
+              - NX-OS
+          position:
+            type: int
+          primary_ip4:
+            type: str
+          primary_ip6:
+            type: str
+          rack:
+            type: str
+            choices:
+              - CHI_01
+              - NY_02
+              - LA_03
+          serial:
+            type: str
+          site:
+            type: str
+            required: true
+            choices:
+              - CHI
+              - NY
+              - LA
+          status:
+            type: str
+            required: true
+            choices:
+              - Active
+              - Inactive
+          tags:
+            type: str
+          tenant:
+            type: str
+            # choices:
+            #   - Production
+            #   - Development
+      wwt_fields:
+# WWT specific fields for tracking devices
+        options:
+          WWT_Device_ID:
+            type: str
+            required: true
+          EOL_date:
+            type: str
+          EOS_date:
+            type: str
+          WWT_Purchase_Order:
+            type: str
+          Device_Cost:
+            type: int
+          Install_Date:
+            type: str
+          Replace_Date:
+            type: str
+          sw_ver:
+            type: str

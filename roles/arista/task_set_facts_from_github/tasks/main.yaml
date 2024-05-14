@@ -1,0 +1,43 @@
+---
+- name: Extract specific values from file_vars
+  ansible.builtin.set_fact:
+    facts_model: "{{ file_vars.device.ansible_facts.ansible_net_model }}"
+    facts_platform: "{{ file_vars.device.ansible_facts.ansible_net_system }}"
+    facts_serial: "{{ file_vars.device.ansible_facts.ansible_net_serialnum }}"
+    facts_version: "{{ file_vars.device.ansible_facts.ansible_net_version }}"
+
+- name: Display multiple variables
+  ansible.builtin.debug:
+    msg: "Name: {{ ansible_net_hostname }}, Device Type: {{ facts_model }}, Platform: {{ facts_platform }}"
+
+- name: Display additional multiple variables
+  ansible.builtin.debug:
+    msg: "Serial: {{ facts_serial }}, Version: {{ facts_version }}"
+
+- name: Transform 'eos_interfaces' to required format
+  ansible.builtin.set_fact:
+    translated_interfaces: "{{ translated_interfaces | default([]) + [item] }}"
+  loop: "{{ file_vars.eos_interfaces.gathered }}"
+  vars:
+    item:
+      facts_device: "{{ file_vars.ansible_net_hostname }}"
+      facts_name: "{{ item.name }}"
+      facts_enabled: "{{ item.enabled }}"
+
+# - name: Debug translated_interfaces
+#   ansible.builtin.debug:
+#     msg: "{{ translated_interfaces }}"
+#
+# - name: Transform 'eos_interfaces' to required format
+#   ansible.builtin.set_fact:
+#     additional_int_details: "{{ additional_int_details | default([]) + [item2] }}"
+#   loop: "{{ translated_interfaces }}"
+#   loop_control:
+#     loop_var: interface_name
+#   vars:
+#     item2:
+#       added_facts_name: "{{ file_vars.device.ansible_facts.ansible_net_interfaces[interface_name] }}"
+#       added_facts_bandwidth: "{{ file_vars.device.ansible_facts.ansible_net_interfaces[interface_name].bandwidth }}"
+#       added_facts_description: "{{ file_vars.device.ansible_facts.ansible_net_interfaces[interface_name].description }}"
+#       added_facts_mtu: "{{ file_vars.device.ansible_facts.ansible_net_interfaces[interface_name].mtu }}"
+#       added_facts_mac_address: "{{ file_vars.device.ansible_facts.ansible_net_interfaces[interface_name].macaddress }}"

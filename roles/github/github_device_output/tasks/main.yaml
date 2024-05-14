@@ -1,0 +1,33 @@
+---
+- name: Check if the file already exists in GitHub repo
+  ansible.builtin.uri:
+    url: "https://api.github.com/repos/davidkingaz/demo-discovery/contents/rawdata/{{ ansible_net_hostname }}.yaml"
+    method: GET
+    headers:
+      Authorization: "Bearer {{ scm_token }}"
+      Accept: "application/vnd.github+json"
+    return_content: true
+    status_code: [200, 404] # Handle file exists (200) and not found (404)
+  register: file_check_response
+  ignore_errors: true # Ignore errors because 404 (file not found) is also an acceptable response
+
+- name: Extract SHA from the response if the file exists
+  ansible.builtin.set_fact:
+    file_sha: "{{ file_check_response.json.sha }}"
+  when: file_check_response.status == 200
+
+- name: Write the output to GitHub repo using API
+  ansible.builtin.uri:
+    url: "https://api.github.com/repos/davidkingaz/demo-discovery/contents/rawdata/{{ ansible_net_hostname }}.yaml"
+    method: PUT
+    headers:
+      Authorization: "Bearer {{ scm_token }}"
+      Accept: "application/vnd.github+json"
+    body_format: json
+    body:
+      message: "Update facts for {{ ansible_net_hostname }}"
+      content: "{{ (eos_output | to_nice_yaml) | b64encode }}"
+      sha: "{{ file_sha | default(omit) }}"
+      branch: "main"
+    status_code: [200, 201]  # Handle creation (201) and updates (200)
+  register: github_response

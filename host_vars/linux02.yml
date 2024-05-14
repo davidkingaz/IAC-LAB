@@ -1,0 +1,6 @@
+---
+ansible_host: 192.168.4.82
+ansible_user: "adminuser"
+ansible_python_interpreter: "/usr/bin/python3"
+ansible_become_password: adminpassword
+ansible_ssh_common_args: '-o StrictHostKeyChecking=no'

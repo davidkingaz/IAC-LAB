@@ -1,0 +1,6 @@
+---
+ansible_network_os: arista.eos.eos
+ansible_become: true
+ansible_become_method: enable
+username: ansible
+password: ansible

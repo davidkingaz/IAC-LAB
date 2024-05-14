@@ -1,0 +1,11 @@
+---
+- name: Setup Gitlab onto Linux Server
+  hosts: linux02
+  gather_facts: false
+  remote_user: "adminuser"
+  connection: ssh
+  become: true
+
+  roles:
+    - setup_docker
+    - setup_gitlab

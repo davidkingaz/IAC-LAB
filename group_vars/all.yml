@@ -1,0 +1,3 @@
+---
+gitlab_version: "latest"  # specify the GitLab version
+gitlab_home: "/path/to/gitlab/home"  # specify the path to the GitLab home directory

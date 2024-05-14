@@ -1,0 +1,7 @@
+---
+- name: Associate gathered facts to host_vars
+  ansible.builtin.set_fact:
+    net_model: "{{ device_output.ansible_facts.ansible_net_model }}"
+    net_serial: "{{ device_output.ansible_facts.ansible_net_serialnum }}"
+    net_platform: "{{ device_output.ansible_facts.ansible_net_system }}"
+    net_version: "{{ device_output.ansible_facts.ansible_net_version }}"

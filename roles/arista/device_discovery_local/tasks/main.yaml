@@ -1,0 +1,19 @@
+---
+- name: Network Resource Manager
+  ansible.builtin.include_role:
+    name: network.base.resource_manager
+  vars:
+# noqa: var-naming[no-role-prefix]
+    operation: 'persist'
+    ansible_network_os: arista.eos.eos
+    resources:
+      - 'interfaces'
+      - 'l2_interfaces'
+      - 'l3_interfaces'
+      - 'bgp_global'
+      - 'bgp_address_family'
+      - 'ospfv2'
+      - 'ospf_interfaces'
+      - 'ospfv3'
+    data_store:
+      local: "/Users/davidking/Documents/developer/demo-iac-ansible-netbox"

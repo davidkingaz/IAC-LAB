@@ -1,0 +1,22 @@
+---
+- name: Check if the file already exists in GitHub repo
+  ansible.builtin.uri:
+    url: "https://api.github.com/repos/davidkingaz/demo-discovery/contents/rawdata/{{ ansible_net_hostname }}.yaml"
+    method: GET
+    headers:
+      Authorization: "Bearer {{ scm_token }}"
+      Accept: "application/vnd.github+json"
+    return_content: true
+    status_code: [200, 404] # Handle file exists (200) and not found (404)
+  register: file_data
+  ignore_errors: true # Ignore errors because 404 (file not found) is also an acceptable response
+
+- name: Decode content from base64
+  ansible.builtin.set_fact:
+    file_content: "{{ (file_data.json.content | b64decode) }}"
+  when: file_data.status == 200
+
+- name: Convert content to YAML and set facts
+  ansible.builtin.set_fact:
+    file_vars: "{{ file_content | from_yaml }}"
+  when: file_data.status == 200

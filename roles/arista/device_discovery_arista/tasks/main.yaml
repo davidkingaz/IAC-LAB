@@ -1,0 +1,147 @@
+---
+- name: Gather Arista EOS facts
+  arista.eos.eos_facts:
+    gather_subset: all
+  register: device_output
+
+- name: Gather EOS facts
+  arista.eos.eos_facts:
+  register: eos_facts_output
+
+- name: Gather from eos_acl_interfaces
+  arista.eos.eos_acl_interfaces:
+    state: gathered
+  register: eos_acl_interfaces_output
+
+- name: Gather from eos_acls
+  arista.eos.eos_acls:
+    state: gathered
+  register: eos_acls_output
+
+# - name: Gather from eos_banner
+#   arista.eos.eos_banner:
+#   register: eos_banner_output
+
+- name: Gather from eos_bgp_global
+  arista.eos.eos_bgp_global:
+    state: gathered
+  register: eos_bgp_global_output
+
+- name: Gather from eos_command
+  arista.eos.eos_command:
+    commands: "show version"
+  register: eos_command_output
+
+- name: Gather from eos_config
+  arista.eos.eos_config:
+  register: eos_config_output
+
+- name: Gather from eos_eapi
+  arista.eos.eos_eapi:
+  register: eos_eapi_output
+
+- name: Gather from eos_hostname
+  arista.eos.eos_hostname:
+    state: gathered
+  register: eos_hostname_output
+
+- name: Gather from eos_interfaces
+  arista.eos.eos_interfaces:
+    state: gathered
+  register: eos_interfaces_output
+
+- name: Gather from eos_l2_interfaces
+  arista.eos.eos_l2_interfaces:
+    state: gathered
+  register: eos_l2_interfaces_output
+
+- name: Gather from eos_l3_interfaces
+  arista.eos.eos_l3_interfaces:
+    state: gathered
+  register: eos_l3_interfaces_output
+
+- name: Gather from eos_lacp
+  arista.eos.eos_lacp:
+    state: gathered
+  register: eos_lacp_output
+
+- name: Gather from eos_lacp_interfaces
+  arista.eos.eos_lacp_interfaces:
+    state: gathered
+  register: eos_lacp_interfaces_output
+
+- name: Gather from eos_lag_interfaces
+  arista.eos.eos_lag_interfaces:
+    state: gathered
+  register: eos_lag_interfaces_output
+
+- name: Gather from eos_lldp_global
+  arista.eos.eos_lldp_global:
+    state: gathered
+  register: eos_lldp_global_output
+
+- name: Gather from eos_logging
+  arista.eos.eos_logging:
+  register: eos_logging_output
+
+- name: Gather from eos_logging_global
+  arista.eos.eos_logging_global:
+    state: gathered
+  register: eos_logging_global_output
+
+- name: Gather from eos_ntp_global
+  arista.eos.eos_ntp_global:
+    state: gathered
+  register: eos_ntp_global_output
+
+- name: Gather from eos_ospf_interfaces
+  arista.eos.eos_ospf_interfaces:
+    state: gathered
+  register: eos_ospf_interfaces_output
+
+- name: Gather from eos_ospfv2
+  arista.eos.eos_ospfv2:
+    state: gathered
+  register: eos_ospfv2_output
+
+- name: Gather from eos_ospfv3
+  arista.eos.eos_ospfv3:
+    state: gathered
+  register: eos_ospfv3_output
+
+- name: Gather from eos_prefix_lists
+  arista.eos.eos_prefix_lists:
+    state: gathered
+  register: eos_prefix_lists_output
+
+- name: Gather from eos_route_maps
+  arista.eos.eos_route_maps:
+    state: gathered
+  register: eos_route_maps_output
+
+- name: Gather from eos_snmp_server
+  arista.eos.eos_snmp_server:
+    state: gathered
+  register: eos_snmp_server_output
+
+# - name: Gather from eos_static_routes
+#   arista.eos.eos_static_routes:
+#     state: gathered
+#   register: eos_static_routes_output
+
+- name: Gather from eos_system
+  arista.eos.eos_system:
+  register: eos_system_output
+
+# - name: Gather from eos_user
+#   arista.eos.eos_user:
+#   register: eos_user_output
+
+- name: Gather from eos_vlans
+  arista.eos.eos_vlans:
+    state: gathered
+  register: eos_vlans_output
+
+# - name: Gather from eos_vrf
+#   arista.eos.eos_vrf:
+#   register: eos_vrf_output

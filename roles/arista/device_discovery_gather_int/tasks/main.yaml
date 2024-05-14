@@ -1,0 +1,9 @@
+---
+- name: Interfaces Manager
+  ansible.builtin.include_role:
+    name: network.interaces.run
+  vars:
+# noqa: var-naming[no-role-prefix]
+    ansible_network_os: arista.eos.eos
+    operations:
+      - name: gather

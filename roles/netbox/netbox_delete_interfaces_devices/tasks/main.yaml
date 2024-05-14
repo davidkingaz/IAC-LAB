@@ -1,0 +1,56 @@
+---
+- name: Get list of Netbox Interfaces
+  ansible.builtin.uri:
+    url: "http://192.168.4.85/api/dcim/interfaces/"
+    method: GET
+    body_format: json
+    headers:
+      accept: "application/json"
+      Content-Type: "application/json"
+      Authorization: "Token {{ obtained_token }}"
+    status_code: 200  # Expecting a 200
+    return_content: true
+  register: nb_interfaces
+
+- name: Debug list of interfaces (Optional)
+  ansible.builtin.debug:
+    var: nb_interfaces
+
+- name: Delete interfaces from NetBox
+  netbox.netbox.netbox_device_interface:
+    netbox_url: "{{ netbox_url }}"
+    netbox_token: "{{ obtained_token }}"
+    data:
+      device: "{{ item.device.name }}"
+      name: "{{ item.name }}"
+    state: absent
+  loop: "{{ nb_interfaces.json.results }}"
+  when: nb_interfaces.json.results is defined and nb_interfaces.json.results
+
+# DELETE ALL DEVICES
+- name: Get list of Netbox Devices
+  ansible.builtin.uri:
+    url: "http://192.168.4.85/api/dcim/devices/"
+    method: GET
+    body_format: json
+    headers:
+      accept: "application/json"
+      Content-Type: "application/json"
+      Authorization: "Token {{ obtained_token }}"
+    status_code: 200  # Expecting a 200
+    return_content: true
+  register: nb_devices
+
+- name: Debug list of devices (Optional)
+  ansible.builtin.debug:
+    var: nb_devices
+
+- name: Delete devices from NetBox
+  netbox.netbox.netbox_device:  # Use the appropriate module to handle devices
+    netbox_url: "{{ netbox_url }}"
+    netbox_token: "{{ obtained_token }}"
+    data:
+      name: "{{ item.name }}"  # Assuming 'name' is the unique identifier for devices in your NetBox setup
+    state: absent
+  loop: "{{ nb_devices.json.results }}"
+  when: nb_devices.json.results is defined and nb_devices.json.results

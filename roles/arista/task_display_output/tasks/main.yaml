@@ -1,0 +1,4 @@
+---
+- name: Display Arista facts
+  ansible.builtin.debug:
+    var: eos_output

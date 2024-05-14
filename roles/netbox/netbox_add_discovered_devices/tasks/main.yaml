@@ -1,0 +1,56 @@
+---
+- name: Add the device to NETBOX
+  netbox.netbox.netbox_device:
+    netbox_url: "{{ netbox_url }}"
+    netbox_token: "{{ obtained_token }}"
+    data:
+      name: "{{ netbox_var.name }}"
+      airflow: "{{ netbox_var.airflow }}"
+      asset_tag: "{{ netbox_var.asset_tag }}"
+#       cluster: "{{ netbox_var.cluster }}"
+      comments: "{{ netbox_var.comments }}"
+      description: "{{ netbox_var.description }}"
+      device_role: "{{ netbox_var.device_role }}"
+      device_type: "{{ net_model }}"
+      face: "{{ netbox_var.face }}"
+# #      local_context_data: "{{ netbox_var.local_context_data }}"
+# #      location: "{{ netbox_var.location }}"
+      platform: "{{ net_platform }}"
+      position: "{{ netbox_var.position }}"
+# #      primary_ip4: "{{ netbox_var.primary_ip4 }}"
+# #      primary_ip6: "{{ netbox_var.primary_ip6 }}"
+      rack: "{{ netbox_var.rack }}"
+      serial: "{{ net_serial }}"
+      site: "{{ netbox_var.site }}"
+      status: "{{ netbox_var.status }}"
+      tags: "{{ netbox_var.tags }}"
+#      tenant: "{{ netbox_var.tenant }}"
+#      vc_position: "{{ netbox_var.vc_position }}"
+#      vc_priority: "{{ netbox_var.vc_priority }}"
+#      virtual _chassis: "{{ netbox_var.virtual_chassis }}"
+    state: "{{ install_state }}"
+  loop: "{{ netbox_variables }}"
+  loop_control:
+    loop_var: netbox_var
+    label: "{{ netbox_var['name'] }}"
+
+- name: Add WWT custom fields to a device on NETBOX
+  netbox.netbox.netbox_device:
+    netbox_url: "{{ netbox_url }}"
+    netbox_token: "{{ obtained_token }}"
+    data:
+      name: "{{ inventory_hostname }}"
+      custom_fields:
+        WWT_Device_ID: "{{ wwt_var.WWT_Device_ID }}"
+        EOL_date: "{{ wwt_var.EOL_date }}"
+        EOS_date: "{{ wwt_var.EOS_date }}"
+        WWT_Purchase_Order: "{{ wwt_var.WWT_Purchase_Order }}"
+        Device_Cost: "{{ wwt_var.Device_Cost }}"
+        Install_Date: "{{ wwt_var.Install_Date }}"
+        Replace_Date: "{{ wwt_var.Replace_Date }}"
+        sw_ver: "{{ net_version }}"
+    state: "{{ install_state }}"
+  loop: "{{ wwt_fields }}"
+  loop_control:
+    loop_var: wwt_var
+    label: "{{ wwt_var['WWT_Device_ID'] }}"

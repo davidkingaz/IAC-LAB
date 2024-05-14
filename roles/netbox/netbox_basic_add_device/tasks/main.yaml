@@ -1,0 +1,38 @@
+---
+- name: Add the device to NETBOX
+  netbox.netbox.netbox_device:
+    netbox_url: "{{ netbox_url }}"
+    netbox_token: "{{ obtained_token }}"
+    data:
+      name: "{{ netbox_var.name }}"
+      device_role: "{{ netbox_var.device_role }}"
+      device_type: "{{ facts_model }}"
+      platform: "{{ facts_platform }}"
+      serial: "{{ facts_serial }}"
+      site: "{{ netbox_var.site }}"
+      status: "{{ netbox_var.status }}"
+    state: "{{ install_state }}"
+  loop: "{{ netbox_variables }}"
+  loop_control:
+    loop_var: netbox_var
+    label: "{{ netbox_var['name'] }}"
+
+- name: Gather facts
+  ansible.builtin.setup:
+    filter: ansible_date_time
+
+- name: Add WWT custom fields to a device on NETBOX
+  netbox.netbox.netbox_device:
+    netbox_url: "{{ netbox_url }}"
+    netbox_token: "{{ obtained_token }}"
+    data:
+      name: "{{ inventory_hostname }}"
+      custom_fields:
+        WWT_Device_ID: "{{ wwt_var.WWT_Device_ID }}"
+        sw_ver: "{{ facts_version }}"
+        compliance: "{{ ansible_date_time.date }}"
+    state: "{{ install_state }}"
+  loop: "{{ wwt_fields }}"
+  loop_control:
+    loop_var: wwt_var
+    label: "{{ wwt_var['WWT_Device_ID'] }}"

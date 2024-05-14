@@ -1,0 +1,16 @@
+---
+- name: Setup the VLANs within NETBOX
+  netbox.netbox.netbox_vlan:
+    netbox_url: "{{ netbox_url }}"
+    netbox_token: "{{ obtained_token }}"
+    data:
+      name: "VLAN {{ vlan.id }}"
+      vid: "{{ vlan.id }}"
+      description: "{{ vlan.description }}"
+    state: "{{ install_state }}"
+  register: result01
+  loop: "{{ vlans }}"
+  loop_control:
+    loop_var: vlan
+    label: "{{ vlan['vid'] }}"
+  tags: [ipam]
