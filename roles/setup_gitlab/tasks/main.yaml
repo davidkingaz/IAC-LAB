@@ -24,7 +24,7 @@
     published_ports:
       - "443:443"
       - "80:80"
-      - "3434:22"
+      - "22:22"
     hostname: "gitlab.kingfamilyaz.com"
     env:
       GITLAB_OMNIBUS_CONFIG: "external_url 'http://gitlab.kingfamilyaz.com';"  # Additional configurations can be added in the string
