@@ -34,6 +34,16 @@
       - "{{ gitlab_home }}/data:/var/opt/gitlab"
     shm_size: 256m
 
+- name: Wait for GitLab to be ready
+  ansible.builtin.uri:
+    url: "http://{{ ansible_host }}/users/sign_in"
+    status_code: 200
+    timeout: 300
+  register: http_result
+  until: http_result.status == 200
+  retries: 10
+  delay: 30
+
 - name: Retrieve GitLab initial root password
   ansible.builtin.command: docker exec gitlab grep 'Password:' /etc/gitlab/initial_root_password
   register: gitlab_root_password
@@ -48,8 +58,8 @@
     container: gitlab
     command: >
       /opt/gitlab/bin/gitlab-rails runner -e production
-      "user = User.find(1); user.password = '@dminPa33word';
-      user.password_confirmation = '@dminPa33word'; user.save!"
+      "user = User.find(1); user.password = 'WWTwwt1!';
+      user.password_confirmation = 'WWTwwt1!'; user.save!"
   register: new_password
 
 - name: Print GitLab new root password
