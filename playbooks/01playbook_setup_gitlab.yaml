@@ -6,6 +6,11 @@
   connection: ssh
   become: true
 
-  roles:
-    - setup_docker
-    - setup_gitlab
+  tasks:
+    - name: Setup Docker Container Engine on Server
+      ansible.builtin.include_role:
+        name: setup_docker
+
+    - name: Setup GitLab CE on Docker
+      ansible.builtin.include_role:
+        name: setup_gitlab
