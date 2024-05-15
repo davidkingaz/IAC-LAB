@@ -11,6 +11,6 @@
       ansible.builtin.include_role:
         name: setup_docker
 
-    - name: Setup GitLab CE on Docker
+    - name: Setup Kafka on Docker
       ansible.builtin.include_role:
-        name: setup_gitlab
+        name: setup_kafka
