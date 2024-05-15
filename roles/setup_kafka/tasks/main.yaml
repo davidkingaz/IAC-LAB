@@ -1,0 +1,22 @@
+---
+- name: Gather facts about the host
+  ansible.builtin.setup:
+    gather_subset:
+      - 'network'
+
+- name: Deploy lensesio/fast-data-dev Kafka container
+  community.docker.docker_container:
+    name: lensesio_fast_data_dev
+    image: "lensesio/fast-data-dev:latest"
+    state: started
+    restart_policy: always
+    detach: true
+    published_ports:
+      - "2181:2181"
+      - "3030:3030"
+      - "8081-8083:8081-8083"
+      - "9581-9585:9581-9585"
+      - "9092:9092"
+    network_mode: host
+    env:
+      ADV_HOST: "{{ ansible_default_ipv4.address }}"

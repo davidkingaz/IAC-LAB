@@ -1,0 +1,16 @@
+---
+- name: Setup Gitlab onto Linux Server
+  hosts: linux02
+  gather_facts: false
+  remote_user: "adminuser"
+  connection: ssh
+  become: true
+
+  tasks:
+    - name: Setup Docker Container Engine on Server
+      ansible.builtin.include_role:
+        name: setup_docker
+
+    - name: Setup GitLab CE on Docker
+      ansible.builtin.include_role:
+        name: setup_gitlab
