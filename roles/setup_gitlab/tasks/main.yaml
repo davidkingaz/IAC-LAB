@@ -18,7 +18,7 @@
   community.docker.docker_container:
     name: gitlab
     image: "gitlab/gitlab-ee:latest"
-    state: started
+    state: "{{ setup_gitlab_state }}"
     restart_policy: always
     detach: true
     published_ports:

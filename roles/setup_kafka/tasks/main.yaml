@@ -8,7 +8,7 @@
   community.docker.docker_container:
     name: kafka
     image: "lensesio/fast-data-dev:latest"
-    state: started
+    state: "{{ setup_kafka_state }}"
     restart_policy: always
     detach: true
     published_ports:

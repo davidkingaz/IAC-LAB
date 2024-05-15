@@ -7,12 +7,8 @@
   become: true
 
   tasks:
-    - name: Setup Docker Container Engine on Server
-      ansible.builtin.include_role:
-        name: setup_docker
-
-    - name: Setup Kafka on Docker
+    - name: Remove Kafka on Docker
       ansible.builtin.include_role:
         name: setup_kafka
       vars:
-        setup_kafka_state: started
+        setup_kafka_state: stopped

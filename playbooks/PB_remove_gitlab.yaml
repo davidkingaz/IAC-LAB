@@ -7,12 +7,8 @@
   become: true
 
   tasks:
-    - name: Setup Docker Container Engine on Server
-      ansible.builtin.include_role:
-        name: setup_docker
-
-    - name: Setup GitLab CE on Docker
+    - name: Remove Gitlab Container on Docker
       ansible.builtin.include_role:
         name: setup_gitlab
       vars:
-        setup_gitlab_state: started
+        setup_gitlab_state: stopped
