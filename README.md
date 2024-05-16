@@ -1,2 +1,2 @@
-# demo-iac-ansible-netbox
-Demonstration of Ansible using Netbox as source-of-truth
+# demo-iac
+Demonstration of Infrastructure-as-Code
