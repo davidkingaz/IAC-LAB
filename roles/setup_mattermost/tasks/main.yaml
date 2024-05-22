@@ -1,0 +1,11 @@
+---
+- name: Deploy Mattermost Preview using Docker
+  community.docker.docker_container:
+    name: mattermost
+    image: "mattermost/mattermost-preview"
+    state: "{{ setup_mattermost_state }}"
+    restart_policy: always
+    detach: true
+    published_ports:
+      - "8065:8065"
+    hostname: "mattermost.kingfamilyaz.com"
