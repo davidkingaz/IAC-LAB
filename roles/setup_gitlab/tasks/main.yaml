@@ -41,7 +41,7 @@
     timeout: 300
   register: http_result
   until: http_result.status == 200
-  retries: 3
+  retries: 10
   delay: 30
 
 - name: Retrieve GitLab initial root password
