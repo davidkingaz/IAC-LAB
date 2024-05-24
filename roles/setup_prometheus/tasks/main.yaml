@@ -1,0 +1,42 @@
+---
+# Deploy Prometheus
+- name: Run Prometheus container
+  community.docker.docker_container:
+    name: prometheus
+    image: prom/prometheus:latest
+    state: started
+    ports:
+      - "9090:9090"
+
+# Create SNMP Exporter configuration
+- name: Ensure SNMP Exporter config directory exists
+  ansible.builtin.file:
+    path: /etc/snmp_exporter/
+    state: directory
+    mode: '0755'
+
+# Copy SNMP YAML to remote host
+- name: Copy dashboard.json to remote host
+  ansible.builtin.copy:
+    src: "/Users/davidking/Documents/dev/IAC-LAB/snmp.yml"
+    dest: "/etc/snmp_exporter/snmp.yml"
+    mode: '0644'
+
+# Run the SNMP Exporter container
+- name: Run SNMP Exporter container
+  community.docker.docker_container:
+    name: snmp_exporter
+    image: prom/snmp-exporter:latest
+    state: started
+    restart: true
+    ports:
+      - "9116:9116"
+    volumes:
+      - "/etc/snmp_exporter/snmp.yml:/etc/snmp_exporter/snmp.yml"
+
+# Create Prometheus configuration to scrape SNMP Exporter
+- name: Ensure Prometheus config directory exists
+  ansible.builtin.file:
+    path: /etc/prometheus/
+    state: directory
+    mode: '0644'
