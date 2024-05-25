@@ -15,4 +15,4 @@
       ansible.builtin.include_role:
         name: setup_gitlab
       vars:
-        setup_gitlab_state: started
+        setup_gitlab_state: present

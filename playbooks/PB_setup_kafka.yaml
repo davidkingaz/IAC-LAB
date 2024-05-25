@@ -1,5 +1,5 @@
 ---
-- name: Setup Gitlab onto Linux Server
+- name: Setup Kafka onto Linux Server
   hosts: linux02
   gather_facts: false
   remote_user: "adminuser"
@@ -15,4 +15,4 @@
       ansible.builtin.include_role:
         name: setup_kafka
       vars:
-        setup_kafka_state: started
+        setup_kafka_state: present

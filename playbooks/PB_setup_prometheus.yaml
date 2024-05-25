@@ -1,0 +1,24 @@
+---
+- name: Setup Prometheus onto Linux Server
+  hosts: linux01
+  gather_facts: false
+  remote_user: "adminuser"
+  connection: ssh
+  become: true
+
+  tasks:
+    - name: Setup Docker Container Engine on Server
+      ansible.builtin.include_role:
+        name: setup_docker
+
+    - name: Setup Prometheus on Docker
+      ansible.builtin.include_role:
+        name: setup_prometheus
+      vars:
+        setup_prometheus_state: present
+    # - linux_deploy_docker
+    # - linux_deploy_prometheus
+    # - linux_config_prometheus
+    # - linux_deploy_grafana
+    # - linux_connect_grafana_prometheus
+    # - linux_config_grafana

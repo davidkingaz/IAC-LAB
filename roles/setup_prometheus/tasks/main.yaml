@@ -4,7 +4,7 @@
   community.docker.docker_container:
     name: prometheus
     image: prom/prometheus:latest
-    state: started
+    state: "{{ setup_prometheus_state }}"
     ports:
       - "9090:9090"
 
@@ -18,7 +18,7 @@
 # Copy SNMP YAML to remote host
 - name: Copy dashboard.json to remote host
   ansible.builtin.copy:
-    src: "/Users/davidking/Documents/dev/IAC-LAB/snmp.yml"
+    src: "/Users/davidking/Documents/developer/IaC_VM/snmp.yml"
     dest: "/etc/snmp_exporter/snmp.yml"
     mode: '0644'
 
@@ -27,7 +27,7 @@
   community.docker.docker_container:
     name: snmp_exporter
     image: prom/snmp-exporter:latest
-    state: started
+    state: "{{ setup_prometheus_state }}"
     restart: true
     ports:
       - "9116:9116"
